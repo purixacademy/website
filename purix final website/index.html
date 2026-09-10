@@ -876,27 +876,23 @@
         return;
       }
 
-      fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      })
-      .then(() => {
-        alert("Success! Your free demo registration has been received.");
-        closeDemoPopup();
-        document.getElementById('googleSheetForm').reset();
-      })
-      .catch(() => {
-        alert("Registration recorded! Our team will contact you.");
-        closeDemoPopup();
-      })
-      .finally(() => {
-        submitBtn.innerText = "Submit Registration →";
-        submitBtn.disabled = false;
-      });
-    });
+      // Request background mein chali jayegi
+fetch(GOOGLE_SCRIPT_URL, {
+  method: "POST",
+  mode: "no-cors",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData)
+});
 
+// Bina 20 sec ruke turant fast success popup
+setTimeout(() => {
+  alert("Registration Successful!");
+  closeDemoPopup();
+  submitBtn.innerText = "Submit Registration →";
+  submitBtn.disabled = false;
+  document.getElementById('googleSheetForm').reset();
+}, 500);
+    
     // 2. Main Page Contact Form Handler
     document.getElementById('contactPageForm').addEventListener('submit', function(e) {
       e.preventDefault();
