@@ -850,49 +850,40 @@
     // Webhook Configuration (Replace with your actual Google Apps Script Web App URL)
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzjKYDZ5fTuScrCYWlGn47bJseEVIaC7NOWc5N2rgMHh1bq8MKFb7F-RWPOMAYM50pZA/exec";
 
-    // 1. Popup Modal Submission Handler
-    document.getElementById('googleSheetForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.innerText = "Submitting...";
-      submitBtn.disabled = true;
+  // 1. Popup Modal Submission Handler
+  document.getElementById('googleSheetForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerText = "Submitting...";
+    submitBtn.disabled = true;
 
-      const formData = {
-        name: document.getElementById('student_name').value,
-        phone: document.getElementById('student_phone').value,
-        class: document.getElementById('student_class').value,
-        board: document.getElementById('student_board').value,
-        district: document.getElementById('student_district').value,
-        block: document.getElementById('student_block').value,
-        date: new Date().toLocaleString()
-      };
+    const formData = {
+      name: document.getElementById('student_name').value,
+      phone: document.getElementById('student_phone').value,
+      class: document.getElementById('student_class').value,
+      board: document.getElementById('student_board').value,
+      district: document.getElementById('student_district').value,
+      block: document.getElementById('student_block').value,
+      date: new Date().toLocaleString()
+    };
 
-      if (GOOGLE_SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
-        alert("Registration Submitted Successfully! (Connect Google Apps Script URL to store in Sheet)");
-        closeDemoPopup();
-        submitBtn.innerText = "Submit Registration →";
-        submitBtn.disabled = false;
-        document.getElementById('googleSheetForm').reset();
-        return;
-      }
+    // Google Sheet me background request
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    });
 
-      // Request background mein chali jayegi
-fetch(GOOGLE_SCRIPT_URL, {
-  method: "POST",
-  mode: "no-cors",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(formData)
-});
-
-// Bina 20 sec ruke turant fast success popup
-setTimeout(() => {
-  alert("Registration Successful!");
-  closeDemoPopup();
-  submitBtn.innerText = "Submit Registration →";
-  submitBtn.disabled = false;
-  document.getElementById('googleSheetForm').reset();
-}, 500);
-});
+    // Fast success response
+    setTimeout(() => {
+      alert("Registration Successful! 🎉");
+      closeDemoPopup();
+      submitBtn.innerText = "Submit Registration →";
+      submitBtn.disabled = false;
+      document.getElementById('googleSheetForm').reset();
+    }, 500);
+  });
     // 2. Main Page Contact Form Handler
     document.getElementById('contactPageForm').addEventListener('submit', function(e) {
       e.preventDefault();
